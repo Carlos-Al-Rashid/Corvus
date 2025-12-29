@@ -1,0 +1,99 @@
+# Miyabi Plugin Ignore Patterns
+# Files and directories that should be excluded from plugin distribution
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+*.js.map
+*.d.ts.map
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Configuration files with secrets
+.miyabi.yml
+.webhook-config.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# AI Agent outputs
+.ai/logs/*.md
+.ai/parallel-reports/*.json
+.ai/parallel-reports/escalations/
+.ai/issues/*.json
+.ai/*.mjs
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+test-results/
+playwright-report/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Git worktrees
+.worktrees/
+worktrees/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Vitest
+.vitest/
+
+# Vite
+.vite/
+
+# Generated files
+generated/
+.archive/
+reports/
+data/
+
+# Package specific compiled files
+packages/**/dist/
+packages/**/build/
+packages/**/*.tsbuildinfo
+
+# Large documentation files (use external links instead)
+docs/SAAS_BUSINESS_MODEL.md
+docs/MARKET_ANALYSIS_2025.md
+
+# Legacy/unused directories
+packages/dashboard/
+packages/dashboard-server/
+packages/vscode-extension/

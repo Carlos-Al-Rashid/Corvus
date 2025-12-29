@@ -1,0 +1,169 @@
+{
+  "name": "@miyabi/coding-agents",
+  "version": "0.1.0",
+  "description": "Coding Agents for Miyabi - 7 specialized agents for development automation",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./base-agent": {
+      "import": "./dist/base-agent.js",
+      "types": "./dist/base-agent.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./types/index": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./types/*": {
+      "import": "./dist/types/*.js",
+      "types": "./dist/types/*.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./utils/*": {
+      "import": "./dist/utils/*.js",
+      "types": "./dist/utils/*.d.ts"
+    },
+    "./coordinator": {
+      "import": "./dist/coordinator/coordinator-agent.js",
+      "types": "./dist/coordinator/coordinator-agent.d.ts"
+    },
+    "./coordinator/*": {
+      "import": "./dist/coordinator/*.js",
+      "types": "./dist/coordinator/*.d.ts"
+    },
+    "./codegen": {
+      "import": "./dist/codegen/codegen-agent.js",
+      "types": "./dist/codegen/codegen-agent.d.ts"
+    },
+    "./codegen/*": {
+      "import": "./dist/codegen/*.js",
+      "types": "./dist/codegen/*.d.ts"
+    },
+    "./review": {
+      "import": "./dist/review/review-agent.js",
+      "types": "./dist/review/review-agent.d.ts"
+    },
+    "./review/*": {
+      "import": "./dist/review/*.js",
+      "types": "./dist/review/*.d.ts"
+    },
+    "./deployment": {
+      "import": "./dist/deployment/deployment-agent.js",
+      "types": "./dist/deployment/deployment-agent.d.ts"
+    },
+    "./deployment/*": {
+      "import": "./dist/deployment/*.js",
+      "types": "./dist/deployment/*.d.ts"
+    },
+    "./issue": {
+      "import": "./dist/issue/issue-agent.js",
+      "types": "./dist/issue/issue-agent.d.ts"
+    },
+    "./issue/*": {
+      "import": "./dist/issue/*.js",
+      "types": "./dist/issue/*.d.ts"
+    },
+    "./pr": {
+      "import": "./dist/pr/pr-agent.js",
+      "types": "./dist/pr/pr-agent.d.ts"
+    },
+    "./pr/*": {
+      "import": "./dist/pr/*.js",
+      "types": "./dist/pr/*.d.ts"
+    },
+    "./coordination/*": {
+      "import": "./dist/coordination/*.js",
+      "types": "./dist/coordination/*.d.ts"
+    },
+    "./feedback-loop/*": {
+      "import": "./dist/feedback-loop/*.js",
+      "types": "./dist/feedback-loop/*.d.ts"
+    },
+    "./ui/index": {
+      "import": "./dist/ui/index.js",
+      "types": "./dist/ui/index.d.ts"
+    },
+    "./ui/*": {
+      "import": "./dist/ui/*.js",
+      "types": "./dist/ui/*.d.ts"
+    },
+    "./water-spider/*": {
+      "import": "./dist/water-spider/*.js",
+      "types": "./dist/water-spider/*.d.ts"
+    },
+    "./worktree/*": {
+      "import": "./dist/worktree/*.js",
+      "types": "./dist/worktree/*.d.ts"
+    },
+    "./monitoring/*": {
+      "import": "./dist/monitoring/*.js",
+      "types": "./dist/monitoring/*.d.ts"
+    },
+    "./github/*": {
+      "import": "./dist/github/*.js",
+      "types": "./dist/github/*.d.ts"
+    },
+    "./execution/*": {
+      "import": "./dist/execution/*.js",
+      "types": "./dist/execution/*.d.ts"
+    },
+    "./omega-system": {
+      "import": "./dist/omega-system/index.js",
+      "types": "./dist/omega-system/index.d.ts"
+    },
+    "./omega-system/*": {
+      "import": "./dist/omega-system/*.js",
+      "types": "./dist/omega-system/*.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "coding",
+    "agents",
+    "automation",
+    "ai",
+    "development",
+    "code-generation",
+    "code-review",
+    "deployment"
+  ],
+  "author": "Miyabi Team",
+  "license": "MIT",
+  "dependencies": {
+    "miyabi-agent-sdk": "^0.1.0-alpha.2",
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@octokit/rest": "^21.1.1",
+    "chalk": "^5.3.0",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShunsukeHayashi/Miyabi.git",
+    "directory": "packages/coding-agents"
+  }
+}

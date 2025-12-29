@@ -1,0 +1,22 @@
+{
+  "name": "miyabi-operations",
+  "version": "1.0.0",
+  "description": "Autonomous development operations powered by GitHub as OS architecture",
+  "author": {
+    "name": "Shunsuke Hayashi",
+    "email": "supernovasyun@gmail.com",
+    "url": "https://github.com/ShunsukeHayashi"
+  },
+  "homepage": "https://shunsukehayashi.github.io/Miyabi/",
+  "repository": "https://github.com/ShunsukeHayashi/Miyabi",
+  "license": "MIT",
+  "keywords": [
+    "autonomous",
+    "github",
+    "ci-cd",
+    "agents",
+    "devops",
+    "automation",
+    "label-system"
+  ]
+}
