@@ -1,16 +1,15 @@
 <div align="center">
 
-# 🌸 Miyabi
+# Psefoy
 
-[![npm version](https://img.shields.io/npm/v/miyabi.svg)](https://www.npmjs.com/package/miyabi)
-[![MCP Bundle](https://img.shields.io/npm/v/miyabi-mcp-bundle.svg?label=mcp-bundle)](https://www.npmjs.com/package/miyabi-mcp-bundle)
+[![npm version](https://img.shields.io/npm/v/psefoy.svg)](https://www.npmjs.com/package/psefoy)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ### Issue を書く。コードが完成する。
 *Write an Issue. Code is completed.*
 
 ```bash
-npx miyabi
+npx psefoy
 ```
 
 ---
@@ -26,12 +25,15 @@ npx miyabi
 
 ---
 
-## パッケージ / Packages
+## About Psefoy
 
-| Package | Version | Description |
-|---------|---------|-------------|
-| [miyabi](https://www.npmjs.com/package/miyabi) | v0.19.0 | CLI - 自律型開発フレームワーク |
-| [miyabi-mcp-bundle](https://www.npmjs.com/package/miyabi-mcp-bundle) | v3.7.1 | MCP Server - 172+ tools |
+Psefoy is an autonomous AI development platform based on the **Miyabi framework** with **test11 validation fixes** applied.
+
+- ✅ Complete Miyabi functionality (21 agents, GitHub OS integration)
+- ✅ Fixed `.claude/settings.example.json` (deprecated hooks removed)
+- ✅ Added `TROUBLESHOOTING.md` (test11 experience documented)
+
+Original Miyabi by [Shunsuke Hayashi](https://github.com/ShunsukeHayashi/Miyabi)
 
 ---
 
@@ -39,10 +41,18 @@ npx miyabi
 
 ```bash
 # CLI
-npx miyabi
+npx psefoy init my-project
+cd my-project
 
-# MCP Server (Claude Desktop/Code)
-npm install -g miyabi-mcp-bundle
+# Setup environment
+export GITHUB_TOKEN=ghp_xxxxx
+export ANTHROPIC_API_KEY=sk-ant-xxxxx
+
+# Check status
+npx psefoy status
+
+# Start autonomous mode
+npx psefoy auto
 ```
 
 ---
@@ -52,15 +62,15 @@ npm install -g miyabi-mcp-bundle
 - 🎯 **7 Claude Skills** - code-reviewer, commit-helper, test-generator...
 - 🪟 **Windows対応** - Cross-platform support
 - 📦 **依存関係更新** - @anthropic-ai/sdk 0.71, @octokit/rest 21
+- 🐛 **test11 fixes** - Settings format error, troubleshooting guide
 
 ---
 
 ## もっと詳しく / Learn More
 
-- 📖 [CLI ドキュメント](./packages/cli/README.md)
-- 🔧 [MCP Bundle ドキュメント](./packages/mcp-bundle/README.md)
-- 💬 [Discord コミュニティ](https://discord.gg/Urx8547abS)
-- 🐛 [Issue 報告](https://github.com/ShunsukeHayashi/Miyabi/issues)
+- 📖 [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Common issues and solutions
+- 📖 [CLAUDE.md](./CLAUDE.md) - Quick reference for Claude Code
+- 🐛 [Issue 報告](https://github.com/Carlos-Al-Rashid/Corvus/issues)
 
 ---
 
@@ -68,12 +78,15 @@ npm install -g miyabi-mcp-bundle
 
 - Node.js 18+
 - GitHub アカウント / GitHub account
+- ANTHROPIC_API_KEY (for agent execution)
 
 ---
 
 ## ライセンス / License
 
-[Apache 2.0](LICENSE) - Copyright (c) 2025 Shunsuke Hayashi
+[Apache 2.0](LICENSE) - Based on Miyabi by Shunsuke Hayashi
+
+Copyright (c) 2025 Carlos Al Rashid
 
 ---
 

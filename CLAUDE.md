@@ -1,15 +1,15 @@
-# Miyabi
+# Psefoy
 
 **One command. Everything automated.**
 
-## What is Miyabi?
+## What is Psefoy?
 
-Autonomous AI development platform. Issue to Deploy, fully automated.
+Autonomous AI development platform based on Miyabi framework with test11 validation fixes. Issue to Deploy, fully automated.
 
 ```bash
-npx miyabi init my-project   # Create new project
-npx miyabi status            # Check status
-npx miyabi auto              # Start autonomous mode
+npx psefoy init my-project   # Create new project
+npx psefoy status            # Check status
+npx psefoy auto              # Start autonomous mode
 ```
 
 ## Architecture
@@ -78,6 +78,7 @@ npm run build
 
 ## Links
 
-- **npm**: [miyabi](https://npmjs.com/package/miyabi), [miyabi-mcp-bundle](https://npmjs.com/package/miyabi-mcp-bundle)
-- **GitHub**: [ShunsukeHayashi/Miyabi](https://github.com/ShunsukeHayashi/Miyabi)
-- **Docs**: `.claude/QUICK_START.md`, `docs/ENTITY_RELATION_MODEL.md`
+- **npm**: [psefoy](https://npmjs.com/package/psefoy)
+- **GitHub**: [Carlos-Al-Rashid/Corvus](https://github.com/Carlos-Al-Rashid/Corvus)
+- **Original**: [Miyabi by Shunsuke Hayashi](https://github.com/ShunsukeHayashi/Miyabi)
+- **Docs**: `.claude/QUICK_START.md`, `TROUBLESHOOTING.md`
