@@ -1,6 +1,6 @@
 {
   "name": "psefoy",
-  "version": "0.19.1",
+  "version": "0.19.4",
   "description": "Psefoy - Autonomous AI development platform with GitHub OS integration. Based on Miyabi framework with test11 validation fixes. Optimized for AI coding agents (Claude Code).",
   "type": "module",
   "bin": {

@@ -14,6 +14,8 @@
 
 import ora from 'ora';
 import chalk from 'chalk';
+import * as fs from 'fs';
+import * as path from 'path';
 import { githubOAuth } from '../auth/github-oauth';
 import { createRepository } from '../setup/repository';
 import { setupLabels } from '../setup/labels';
@@ -22,6 +24,7 @@ import { deployWorkflows } from '../setup/workflows';
 import { cloneAndSetup } from '../setup/local';
 import { createWelcomeIssue } from '../setup/welcome';
 import { deployClaudeConfig, deployClaudeConfigToGitHub, verifyClaudeConfig } from '../setup/claude-config';
+import { execCommand } from '../utils/cross-platform';
 
 export interface InitOptions {
   private?: boolean;
@@ -157,8 +160,114 @@ export async function init(projectName: string, options: InitOptions = {}) {
     projectPath = `./${projectName}`;
     spinner.succeed(chalk.green('Local setup complete'));
   } catch (error) {
-    spinner.warn(chalk.yellow('Local setup skipped'));
-    console.log(chalk.gray(`  Clone manually: git clone ${repo.clone_url}\n`));
+    spinner.fail(chalk.red('Local setup failed, creating essential files...'));
+
+    // Fallback: Create essential files even if cloneAndSetup failed
+    try {
+      const fallbackPath = `./${projectName}`;
+
+      // Ensure directory exists
+      if (!fs.existsSync(fallbackPath)) {
+        execCommand(`git clone ${repo.clone_url} ${projectName}`, { stdio: 'inherit' });
+      }
+
+      projectPath = fallbackPath;
+
+      // Create package.json
+      const packageJson = {
+        name: projectName,
+        version: '0.1.0',
+        description: 'Autonomous development powered by Agentic OS',
+        type: 'module',
+        scripts: {
+          dev: 'tsx src/index.ts',
+          build: 'tsc',
+          test: 'vitest',
+          lint: 'eslint . --ext .ts,.tsx',
+          typecheck: 'tsc --noEmit',
+        },
+        keywords: ['agentic-os', 'autonomous'],
+        author: '',
+        license: 'MIT',
+        dependencies: {},
+        devDependencies: {
+          '@types/node': '^20.10.0',
+          '@typescript-eslint/eslint-plugin': '^6.13.0',
+          '@typescript-eslint/parser': '^6.13.0',
+          eslint: '^8.54.0',
+          tsx: '^4.7.0',
+          typescript: '^5.8.3',
+          vitest: '^3.2.4',
+        },
+      };
+
+      fs.writeFileSync(
+        path.join(fallbackPath, 'package.json'),
+        JSON.stringify(packageJson, null, 2) + '\n'
+      );
+
+      // Create tsconfig.json
+      const tsconfig = {
+        compilerOptions: {
+          target: 'ES2022',
+          module: 'ESNext',
+          lib: ['ES2022'],
+          moduleResolution: 'node',
+          esModuleInterop: true,
+          resolveJsonModule: true,
+          strict: true,
+          skipLibCheck: true,
+          forceConsistentCasingInFileNames: true,
+          outDir: './dist',
+          rootDir: './src',
+        },
+        include: ['src/**/*'],
+        exclude: ['node_modules', 'dist'],
+      };
+
+      fs.writeFileSync(
+        path.join(fallbackPath, 'tsconfig.json'),
+        JSON.stringify(tsconfig, null, 2) + '\n'
+      );
+
+      // Create src directory with index.ts
+      const srcDir = path.join(fallbackPath, 'src');
+      if (!fs.existsSync(srcDir)) {
+        fs.mkdirSync(srcDir, { recursive: true });
+      }
+
+      fs.writeFileSync(
+        path.join(srcDir, 'index.ts'),
+        `/**\n * ${projectName}\n *\n * Autonomous development powered by Agentic OS\n */\n\nexport function main() {\n  console.log('🌸 ${projectName}');\n  console.log('Autonomous development powered by Agentic OS\\n');\n}\n\n// Run if executed directly\nif (import.meta.url === \`file://\${process.argv[1]}\`) {\n  main();\n}\n`
+      );
+
+      // Create tests directory
+      const testsDir = path.join(fallbackPath, 'tests');
+      if (!fs.existsSync(testsDir)) {
+        fs.mkdirSync(testsDir, { recursive: true });
+      }
+
+      fs.writeFileSync(
+        path.join(testsDir, 'example.test.ts'),
+        `import { describe, it, expect } from 'vitest';\nimport { main } from '../src/index';\n\ndescribe('${projectName}', () => {\n  it('should run main function', () => {\n    expect(() => main()).not.toThrow();\n  });\n});\n`
+      );
+
+      // Run npm install
+      if (!options.skipInstall) {
+        execCommand('npm install', {
+          cwd: fallbackPath,
+          stdio: 'inherit',
+        });
+      }
+
+      spinner.succeed(chalk.green('Essential files created'));
+    } catch (fallbackError) {
+      spinner.fail(chalk.red('Failed to create essential files'));
+      console.log(chalk.yellow('\n💡 Please clone and setup manually:\n'));
+      console.log(chalk.gray(`  git clone ${repo.clone_url}`));
+      console.log(chalk.gray(`  cd ${projectName}`));
+      console.log(chalk.gray(`  npm init -y && npm install\n`));
+    }
   }
 
   // Step 6.5: Deploy Claude Code configuration
@@ -221,6 +330,82 @@ export async function init(projectName: string, options: InitOptions = {}) {
     } catch (error) {
       spinner.warn(chalk.yellow('Verification skipped'));
     }
+  }
+
+  // Step 9: Setup GitHub Secrets and .env
+  console.log(chalk.cyan('\n🔐 Setting up API keys...\n'));
+  console.log(chalk.white('The AI agents need API keys to function.'));
+  console.log(chalk.white('You need to configure:\n'));
+  console.log(chalk.gray('  1. ANTHROPIC_API_KEY - Get from https://console.anthropic.com/'));
+  console.log(chalk.gray('  2. GITHUB_TOKEN - Auto-configured (already logged in)\n'));
+
+  try {
+    // @ts-ignore
+    const { default: inquirer } = await import('inquirer');
+
+    const { anthropicKey } = await inquirer.prompt([
+      {
+        type: 'password',
+        name: 'anthropicKey',
+        message: 'Enter your Anthropic API Key (sk-ant-...):',
+        mask: '*',
+        validate: (input: string) => {
+          if (!input || !input.startsWith('sk-ant-')) {
+            return 'Please enter a valid Anthropic API key (starts with sk-ant-)';
+          }
+          return true;
+        },
+      },
+    ]);
+
+    // Set GitHub Secrets
+    spinner.start('Setting GitHub Secrets...');
+
+    try {
+      // Set ANTHROPIC_API_KEY
+      await execCommand(`gh secret set ANTHROPIC_API_KEY --body "${anthropicKey}"`, {
+        cwd: projectPath || '.',
+        stdio: 'pipe',
+      });
+
+      // GITHUB_TOKEN is auto-provided by GitHub Actions, but we can set it for local development
+      await execCommand(`gh secret set GITHUB_TOKEN --body "${token}"`, {
+        cwd: projectPath || '.',
+        stdio: 'pipe',
+      });
+
+      spinner.succeed(chalk.green('GitHub Secrets configured'));
+    } catch (error) {
+      spinner.fail(chalk.red('Failed to set GitHub Secrets'));
+      console.log(chalk.yellow('\n💡 Set manually:\n'));
+      console.log(chalk.gray(`  gh secret set ANTHROPIC_API_KEY`));
+      console.log(chalk.gray(`  gh secret set GITHUB_TOKEN\n`));
+    }
+
+    // Create .env file
+    if (projectPath) {
+      spinner.start('Creating .env file...');
+
+      const envContent = `# Anthropic API Key
+ANTHROPIC_API_KEY=${anthropicKey}
+
+# GitHub Personal Access Token
+GITHUB_TOKEN=${token}
+`;
+
+      const envPath = path.join(projectPath, '.env');
+      fs.writeFileSync(envPath, envContent, 'utf-8');
+
+      spinner.succeed(chalk.green('.env file created'));
+      console.log(chalk.gray(`  ✓ ${envPath}`));
+    }
+
+  } catch (error) {
+    console.log(chalk.yellow('\n⚠️  API key setup skipped'));
+    console.log(chalk.gray('  You can configure later:\n'));
+    console.log(chalk.gray(`  cd ${projectName}`));
+    console.log(chalk.gray('  gh secret set ANTHROPIC_API_KEY'));
+    console.log(chalk.gray('  echo "ANTHROPIC_API_KEY=sk-ant-..." > .env\n'));
   }
 
   // Success!
