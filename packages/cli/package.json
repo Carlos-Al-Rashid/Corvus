@@ -28,7 +28,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "postinstall": "node scripts/postinstall.js",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "echo 'Using existing dist'"
   },
   "keywords": [
     "ai",
