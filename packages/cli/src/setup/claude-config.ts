@@ -201,6 +201,136 @@ export async function deployClaudeConfigToGitHub(
     throw new Error(`CLAUDE.md template not found: ${claudeMdTemplate}`);
   }
 
+  // 2.5. Add package.json
+  const packageJson = {
+    name: projectName,
+    version: '0.1.0',
+    description: 'Autonomous development powered by Agentic OS',
+    type: 'module',
+    scripts: {
+      dev: 'tsx src/index.ts',
+      build: 'tsc',
+      test: 'vitest',
+      lint: 'eslint . --ext .ts,.tsx',
+      typecheck: 'tsc --noEmit',
+    },
+    keywords: ['agentic-os', 'autonomous'],
+    author: '',
+    license: 'MIT',
+    dependencies: {},
+    devDependencies: {
+      '@types/node': '^20.10.0',
+      '@typescript-eslint/eslint-plugin': '^6.13.0',
+      '@typescript-eslint/parser': '^6.13.0',
+      eslint: '^8.54.0',
+      tsx: '^4.7.0',
+      typescript: '^5.8.3',
+      vitest: '^3.2.4',
+    },
+  };
+
+  filesToCommit.push({
+    path: 'package.json',
+    content: JSON.stringify(packageJson, null, 2) + '\n',
+  });
+  console.log(`[Claude Config] Added package.json`);
+
+  // 2.6. Add tsconfig.json
+  const tsconfig = {
+    compilerOptions: {
+      target: 'ES2022',
+      module: 'ESNext',
+      lib: ['ES2022'],
+      moduleResolution: 'node',
+      esModuleInterop: true,
+      resolveJsonModule: true,
+      strict: true,
+      skipLibCheck: true,
+      forceConsistentCasingInFileNames: true,
+      outDir: './dist',
+      rootDir: './src',
+    },
+    include: ['src/**/*'],
+    exclude: ['node_modules', 'dist'],
+  };
+
+  filesToCommit.push({
+    path: 'tsconfig.json',
+    content: JSON.stringify(tsconfig, null, 2) + '\n',
+  });
+  console.log(`[Claude Config] Added tsconfig.json`);
+
+  // 2.7. Add src/index.ts
+  const indexTs = `/**
+ * ${projectName}
+ *
+ * Autonomous development powered by Agentic OS
+ */
+
+export function main() {
+  console.log('🌸 ${projectName}');
+  console.log('Autonomous development powered by Agentic OS\\n');
+}
+
+// Run if executed directly
+if (import.meta.url === \`file://\${process.argv[1]}\`) {
+  main();
+}
+`;
+
+  filesToCommit.push({
+    path: 'src/index.ts',
+    content: indexTs,
+  });
+  console.log(`[Claude Config] Added src/index.ts`);
+
+  // 2.8. Add tests/example.test.ts
+  const testTs = `import { describe, it, expect } from 'vitest';
+import { main } from '../src/index';
+
+describe('${projectName}', () => {
+  it('should run main function', () => {
+    expect(() => main()).not.toThrow();
+  });
+
+  it('should pass basic test', () => {
+    expect(1 + 1).toBe(2);
+  });
+});
+`;
+
+  filesToCommit.push({
+    path: 'tests/example.test.ts',
+    content: testTs,
+  });
+  console.log(`[Claude Config] Added tests/example.test.ts`);
+
+  // 2.9. Add package-lock.json (minimal version)
+  const packageLock = {
+    name: projectName,
+    version: '0.1.0',
+    lockfileVersion: 3,
+    requires: true,
+    packages: {
+      '': {
+        name: projectName,
+        version: '0.1.0',
+        devDependencies: {
+          '@types/node': '^20.10.0',
+          typescript: '^5.8.3',
+          tsx: '^4.7.0',
+          vitest: '^3.2.4',
+        },
+      },
+    },
+  };
+
+  filesToCommit.push({
+    path: 'package-lock.json',
+    content: JSON.stringify(packageLock, null, 2) + '\n',
+  });
+  console.log(`[Claude Config] Added package-lock.json`);
+
   // 3. Commit all files to GitHub using Contents API with retry mechanism
   // Retry up to 3 times in case of concurrent updates
   const maxRetries = 3;
